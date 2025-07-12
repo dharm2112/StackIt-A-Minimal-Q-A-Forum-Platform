@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StackIt UI</title>
+  <link href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 1rem;
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .sidebar {
+      width: 300px;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-description {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .vote-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .vote-button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vote-button.up:hover {
+      color: #16a34a;
+      background-color: #e6f4ea;
+      border-radius: 4px;
+    }
+
+    .vote-button.down:hover {
+      color: #dc2626;
+      background-color: #fce8e8;
+      border-radius: 4px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+
+    .tag {
+      background-color: #e0e7ff;
+      color: #3730a3;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      color: #666;
+    }
+
+    .meta-group {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .author {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .sidebar-tag-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .sidebar-tag-item:hover {
+      background-color: #f1f5f9;
+    }
+
+    .recent-item {
+      margin-bottom: 0.75rem;
+    }
+
+    .text-muted-foreground {
+      color: #888;
+    }
+
+    .text-foreground {
+      color: #111;
+    }
+
+    .font-medium {
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="lucide lucide-hash"></i>Popular Tags</h3>
+      </div>
+      <div class="card-content">
+        <div>
+          <div class="sidebar-tag-item"><span class="tag">React</span><span>45</span></div>
+          <div class="sidebar-tag-item"><span class="tag">TypeScript</span><span>32</span></div>
+          <div class="sidebar-tag-item"><span class="tag">JavaScript</span><span>28</span></div>
+          <div class="sidebar-tag-item"><span class="tag">Node.js</span><span>25</span></div>
+          <div class="sidebar-tag-item"><span class="tag">CSS</span><span>22</span></div>
+          <div class="sidebar-tag-item"><span class="tag">HTML</span><span>18</span></div>
+          <div class="sidebar-tag-item"><span class="tag">Next.js</span><span>15</span></div>
+          <div class="sidebar-tag-item"><span class="tag">Python</span><span>12</span></div>
+          <div class="sidebar-tag-item"><span class="tag">Vue.js</span><span>10</span></div>
+          <div class="sidebar-tag-item"><span class="tag">Tailwind</span><span>8</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Recent Activity</h3>
+      </div>
+      <div class="card-content">
+        <div class="recent-item text-sm">
+          <p class="text-muted-foreground">Latest question</p>
+          <p class="font-medium text-foreground">2 minutes ago</p>
+        </div>
+        <div class="recent-item text-sm">
+          <p class="text-muted-foreground">Latest answer</p>
+          <p class="font-medium text-foreground">5 minutes ago</p>
+        </div>
+        <div class="recent-item text-sm">
+          <p class="text-muted-foreground">Most active today</p>
+          <p class="font-medium text-foreground">React discussions</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <div class="card-header">
+        <div style="flex: 1">
+          <h3 class="card-title">How do closures work in JavaScript?</h3>
+          <p class="card-description">Closures allow a function to access variables from an enclosing scope or environment even after it leaves the scope...</p>
+        </div>
+
+        <div class="vote-section">
+          <button class="vote-button up"><i class="lucide lucide-arrow-up"></i></button>
+          <span style="font-size: 0.875rem; font-weight: 500;">15</span>
+          <button class="vote-button down"><i class="lucide lucide-arrow-down"></i></button>
+        </div>
+      </div>
+
+      <div class="tags">
+        <span class="tag">javascript</span>
+        <span class="tag">closures</span>
+        <span class="tag">functions</span>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-group">
+          <div class="meta-item">
+            <i class="lucide lucide-message-square"></i>
+            <span><strong>2</strong> answers</span>
+            <i class="lucide lucide-check" style="color: #16a34a;"></i>
+          </div>
+          <div class="meta-item">
+            <i class="lucide lucide-clock"></i>
+            <span>2 hours ago</span>
+          </div>
+        </div>
+        <div class="author">
+          <div class="avatar">A</div>
+          <span style="font-weight: 500;">Alice</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StackIt UI</title>
+  <link href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.css" rel="stylesheet">
+  <style>
+    /* CSS remains unchanged */
+    body {
+      margin: 0;
+      padding: 1rem;
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      display: flex;
+      gap: 2rem;
+    }
+    .sidebar { width: 300px; }
+    .content { flex: 1; }
+    .card { background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 1rem; margin-bottom: 1.5rem; }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .card-title { font-size: 1.1rem; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; }
+    .card-description { margin-top: 0.5rem; font-size: 0.9rem; color: #555; }
+    .vote-section { display: flex; flex-direction: column; align-items: center; }
+    .vote-button { background: transparent; border: none; cursor: pointer; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; }
+    .vote-button.up:hover { color: #16a34a; background-color: #e6f4ea; border-radius: 4px; }
+    .vote-button.down:hover { color: #dc2626; background-color: #fce8e8; border-radius: 4px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+    .tag { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; transition: background-color 0.3s; }
+    .tag-primary { background-color: #eef2ff; border: 1px solid #c7d2fe; color: #4f46e5; }
+    .card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; color: #666; }
+    .meta-group { display: flex; gap: 1.5rem; }
+    .meta-item { display: flex; align-items: center; gap: 0.375rem; }
+    .author { display: flex; align-items: center; gap: 0.5rem; }
+    .avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #9333ea); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+    .sidebar-tag-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-radius: 6px; cursor: pointer; transition: background-color 0.2s; }
+    .sidebar-tag-item:hover { background-color: #f1f5f9; }
+    .recent-item { margin-bottom: 0.75rem; }
+    .text-muted-foreground { color: #888; }
+    .text-foreground { color: #111; }
+    .font-medium { font-weight: 500; }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="lucide lucide-hash"></i>Popular Tags</h3>
+      </div>
+      <div class="card-content" id="popular-tags"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Recent Activity</h3>
+      </div>
+      <div class="card-content">
+        <div class="recent-item text-sm">
+          <p class="text-muted-foreground">Latest question</p>
+          <p class="font-medium text-foreground">2 minutes ago</p>
+        </div>
+        <div class="recent-item text-sm">
+          <p class="text-muted-foreground">Latest answer</p>
+          <p class="font-medium text-foreground">5 minutes ago</p>
+        </div>
+        <div class="recent-item text-sm">
+          <p class="text-muted-foreground">Most active today</p>
+          <p class="font-medium text-foreground">React discussions</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" id="question-list"></div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+
+    const questions = [
+      {
+        id: "1",
+        title: "How to implement authentication in React with TypeScript?",
+        description: "I'm building a React application with TypeScript and need to implement user authentication. What's the best approach for handling login, logout, and protected routes?",
+        author: { name: "John Doe" },
+        tags: ["React", "TypeScript", "Authentication", "JWT"],
+        votes: 15,
+        answers: 3,
+        hasAcceptedAnswer: true,
+        createdAt: "2 hours ago"
+      },
+      {
+        id: "2",
+        title: "Best practices for state management in large React applications",
+        description: "I'm working on a large-scale React application and struggling with state management. Should I use Redux, Context API, or something else?",
+        author: { name: "Sarah Smith" },
+        tags: ["React", "Redux", "State Management", "Architecture"],
+        votes: 23,
+        answers: 7,
+        hasAcceptedAnswer: false,
+        createdAt: "4 hours ago"
+      }
+    ];
+
+    const tags = [
+      { name: "React", count: 45 },
+      { name: "TypeScript", count: 32 },
+      { name: "JavaScript", count: 28 },
+      { name: "Node.js", count: 25 },
+      { name: "CSS", count: 22 },
+      { name: "HTML", count: 18 },
+      { name: "Next.js", count: 15 },
+      { name: "Python", count: 12 },
+      { name: "Vue.js", count: 10 },
+      { name: "Tailwind", count: 8 }
+    ];
+
+    const questionList = document.getElementById('question-list');
+    const popularTags = document.getElementById('popular-tags');
+
+    questions.forEach(q => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-header">
+          <div style="flex: 1">
+            <h3 class="card-title">${q.title}</h3>
+            <p class="card-description">${q.description}</p>
+          </div>
+          <div class="vote-section">
+            <button class="vote-button up"><i class="lucide lucide-arrow-up"></i></button>
+            <span style="font-size: 0.875rem; font-weight: 500;">${q.votes}</span>
+            <button class="vote-button down"><i class="lucide lucide-arrow-down"></i></button>
+          </div>
+        </div>
+        <div class="tags">
+          ${q.tags.map(t => `<span class="tag tag-primary">${t}</span>`).join('')}
+        </div>
+        <div class="card-meta">
+          <div class="meta-group">
+            <div class="meta-item">
+              <i class="lucide lucide-message-square"></i>
+              <span><strong>${q.answers}</strong> answers</span>
+              ${q.hasAcceptedAnswer ? '<i class="lucide lucide-check" style="color: #16a34a;"></i>' : ''}
+            </div>
+            <div class="meta-item">
+              <i class="lucide lucide-clock"></i>
+              <span>${q.createdAt}</span>
+            </div>
+          </div>
+          <div class="author">
+            <div class="avatar">${q.author.name[0]}</div>
+            <span style="font-weight: 500;">${q.author.name}</span>
+          </div>
+        </div>
+      `;
+      questionList.appendChild(card);
+    });
+
+    tags.forEach(tag => {
+      const item = document.createElement('div');
+      item.className = 'sidebar-tag-item';
+      item.innerHTML = `<span class="tag tag-primary">${tag.name}</span><span>${tag.count}</span>`;
+      popularTags.appendChild(item);
+    });
+  </script>
+</body>
+
+</html>
